@@ -46,19 +46,23 @@ namespace YourDecade
             string groupName = await DisplayPromptAsync("Новая группа", "Введите название группы");
             if (groupName == null || groupName == "" || groupName.Length > 20)
                 return;
+            var groupContainer = new AbsoluteLayout() { HeightRequest = 180, WidthRequest = 180};
+            groupContainer.Children.Add(new Image() { Source = "group_box.png" }, new Rectangle(0.5, 0.5, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize), AbsoluteLayoutFlags.PositionProportional);
+            groupContainer.Children.Add(new Label() { Text = groupName }, new Rectangle(0.5, 0.71, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize), AbsoluteLayoutFlags.PositionProportional);
+
             var bt = new Button()
             {
                 BackgroundColor = Color.Transparent,
-                ImageSource = "group_box.png",
-                Text = groupName,
-                ContentLayout = new Button.ButtonContentLayout(Button.ButtonContentLayout.ImagePosition.Top, 0),
-                HeightRequest = 180,
-                WidthRequest = 180,
-                Padding = 0,
-                Margin = 0,
             };
             bt.Clicked += OpenGroup;
-            flexLayout.Children.Insert(1, bt);
+            groupContainer.Children.Add
+                (bt,
+                new Rectangle(0.5, 0.5, 0.75, 0.75),
+                AbsoluteLayoutFlags.All
+                );
+
+            
+            flexLayout.Children.Insert(1, groupContainer);
 
             if (flexLayout.Children.Count > 15 )
                 addNewGroupButton.IsVisible = false;
