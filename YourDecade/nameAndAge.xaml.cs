@@ -29,13 +29,14 @@ namespace YourDecade
         {
             Text = "Имя введено неверно!",
             IsVisible = false,
-            TextColor = Color.Red
+            TextColor = new Color(0, 0, 0, 0.3)
         };
 
         Label logo = new Label()
         {
             Text = "YourDecade",
             FontSize = 48,
+            FontFamily = "SF-Heavy",
             TextColor = Color.Black
         };
 

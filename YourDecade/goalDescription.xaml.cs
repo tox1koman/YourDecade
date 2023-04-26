@@ -68,7 +68,7 @@ namespace YourDecade
                 AbsoluteLayoutFlags.PositionProportional
                 );
             goalNameContainer.Children.Add(
-                new Label() { Text = goalName, FontSize = 32, FontAttributes = FontAttributes.Bold, TextColor = Color.Black }, 
+                new Label() { Text = goalName, FontSize = 32, FontFamily = "SF-Bold", TextColor = Color.Black }, 
                 new Rectangle(0.5, 0.5, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize), 
                 AbsoluteLayoutFlags.PositionProportional
                 );

@@ -48,7 +48,7 @@ namespace YourDecade
                 return;
             var groupContainer = new AbsoluteLayout() { HeightRequest = 180, WidthRequest = 180};
             groupContainer.Children.Add(new Image() { Source = "group_box.png" }, new Rectangle(0.5, 0.5, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize), AbsoluteLayoutFlags.PositionProportional);
-            groupContainer.Children.Add(new Label() { Text = groupName }, new Rectangle(0.5, 0.71, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize), AbsoluteLayoutFlags.PositionProportional);
+            groupContainer.Children.Add(new Label() { Text = groupName, FontFamily = "SF-Bold" }, new Rectangle(0.5, 0.71, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize), AbsoluteLayoutFlags.PositionProportional);
 
             var bt = new Button()
             {
@@ -61,7 +61,6 @@ namespace YourDecade
                 AbsoluteLayoutFlags.All
                 );
 
-            
             flexLayout.Children.Insert(1, groupContainer);
 
             if (flexLayout.Children.Count > 15 )
