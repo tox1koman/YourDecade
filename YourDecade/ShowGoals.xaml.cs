@@ -13,14 +13,10 @@ namespace YourDecade
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ShowGoals : ContentPage
     {
-        Grid grid = new Grid();
+        public Grid grid = new Grid();
         ScrollView scrollView = new ScrollView();
         StackLayout stackLayout = new StackLayout();
-        Button addBt = new Button()
-        {
-            BackgroundColor = new Color(204, 248, 233, 0.6),
-            ImageSource = "plus.png"
-        };
+        
 
         Button goBackButton = new Button() { ImageSource = "arrow_go_back.png", BackgroundColor = Color.Transparent, HorizontalOptions = LayoutOptions.StartAndExpand };
 
@@ -32,14 +28,21 @@ namespace YourDecade
             grid.Children.Add(scrollView);
             scrollView.Content = stackLayout;
             BackgroundImageSource = "background2.png";
-            CreateGoals();
+            CreateAddButton();
         }
 
-        public void CreateGoals()
+        private void CreateAddButton()
         {
+            var addBt = new Button() { BackgroundColor = Color.Transparent};
+
             addBt.Clicked += AddGoal;
             stackLayout.Children.Add(goBackButton);
-            stackLayout.Children.Add(addBt);
+            var btContainer = new AbsoluteLayout() { HeightRequest = 150 };
+            btContainer.Children.Add(new Image() { Source = "goal_box.png" }, new Rectangle(0.5, 0.5, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize), AbsoluteLayoutFlags.PositionProportional);
+            btContainer.Children.Add(new Image() { Source = "plus.png" }, new Rectangle(0.5, 0.42, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize), AbsoluteLayoutFlags.PositionProportional);
+            btContainer.Children.Add(addBt, new Rectangle(0.5, 0.5, 0.8, 0.8), AbsoluteLayoutFlags.All);
+            stackLayout.Children.Add(btContainer);
+
         }
 
         private async void AddGoal(object sender, EventArgs e)
@@ -47,15 +50,22 @@ namespace YourDecade
             string goalName = await DisplayPromptAsync("Новая цель", "Введите название цели");
             if (goalName == null || goalName == "")
                 return;
+
+            var groupContainer = new AbsoluteLayout() { HeightRequest = 150};
+
+            groupContainer.Children.Add(new Image() { Source = "goal_box.png" }, new Rectangle(0.5, 0.53, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize), AbsoluteLayoutFlags.PositionProportional);
+            groupContainer.Children.Add(new Image() { Source = "bucket.png" }, new Rectangle(0.15, 0.4, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize), AbsoluteLayoutFlags.PositionProportional);
+            groupContainer.Children.Add(new Label() { Text = goalName, FontSize = 32, TextColor = Color.Black, FontFamily = "SF-Bold" }, new Rectangle(0.5, 0.4, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize), AbsoluteLayoutFlags.PositionProportional);
+
             var bt = new Button()
             {
                 ContentLayout = new Button.ButtonContentLayout(Button.ButtonContentLayout.ImagePosition.Left, 5),
-                ImageSource = "bucket.png",
-                BackgroundColor = new Color(204, 248, 233, 0.5),
-                Text = goalName
+                BackgroundColor = Color.Transparent,
             };
             bt.Clicked += OpenGoal;
-            stackLayout.Children.Insert(stackLayout.Children.Count - 1, bt);
+
+            groupContainer.Children.Add(bt, new Rectangle(0.5, 0.5, 0.8, 0.8), AbsoluteLayoutFlags.All);
+            stackLayout.Children.Insert(stackLayout.Children.Count - 1, groupContainer);
         }
 
         private async void OpenGoal(object sender, EventArgs e)
