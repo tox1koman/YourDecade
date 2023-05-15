@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 using Xamarin.Forms.Xaml;
+using DatePicker = Xamarin.Forms.DatePicker;
 
 namespace YourDecade
 {
@@ -32,9 +33,9 @@ namespace YourDecade
         };
 
         Grid subgoalsGrid = new Grid();
-        AbsoluteLayout subgoalsAbsoluteLayout = new AbsoluteLayout() { BackgroundColor = Color.Transparent};
-        Xamarin.Forms.ScrollView subgoalScrollView = new Xamarin.Forms.ScrollView() { BackgroundColor = Color.Transparent};
-        StackLayout subgoalsStackLayout = new StackLayout() { BackgroundColor = Color.Transparent, Margin = 10};
+        AbsoluteLayout subgoalsAbsoluteLayout = new AbsoluteLayout() { BackgroundColor = Color.Transparent };
+        Xamarin.Forms.ScrollView subgoalScrollView = new Xamarin.Forms.ScrollView() { BackgroundColor = Color.Transparent };
+        StackLayout subgoalsStackLayout = new StackLayout() { BackgroundColor = Color.Transparent, Margin = 10 };
 
         Image notesBg = new Image()
         {
@@ -42,8 +43,6 @@ namespace YourDecade
         };
 
         // Календарь ----------------------------
-
-        Xamarin.Forms.DatePicker calend = new Xamarin.Forms.DatePicker();
 
         // Календарь ----------------------------
 
@@ -56,32 +55,32 @@ namespace YourDecade
             Content = grid;
             BackgroundImageSource = "background2.png";
             subgoalsGrid.Children.Add(subgoalsAbsoluteLayout);
-            subgoalsAbsoluteLayout.Children.Add(new Image() { Source = "subgoals_background.png"}, new Rectangle(0.5, 0.5, 1, 1), AbsoluteLayoutFlags.All);
+            subgoalsAbsoluteLayout.Children.Add(new Image() { Source = "subgoals_background.png" }, new Rectangle(0.5, 0.5, 1, 1), AbsoluteLayoutFlags.All);
             subgoalsAbsoluteLayout.Children.Add(subgoalScrollView, new Rectangle(0.5, 0.5, 1, 1), AbsoluteLayoutFlags.All);
             subgoalScrollView.Content = subgoalsStackLayout;
             CreateAddButton();
             var goalNameContainer = new AbsoluteLayout();
             goalNameContainer.Children.Add
                 (
-                new Image() { Source = "group_name_box.png" }, 
-                new Rectangle(0.5, 0.5, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize), 
+                new Image() { Source = "group_name_box.png" },
+                new Rectangle(0.5, 0.5, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize),
                 AbsoluteLayoutFlags.PositionProportional
                 );
             goalNameContainer.Children.Add(
-                new Label() { Text = goalName, FontSize = 32, FontFamily = "SF-Bold", TextColor = Color.Black }, 
-                new Rectangle(0.5, 0.5, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize), 
+                new Label() { Text = goalName, FontSize = 32, FontFamily = "SF-Bold", TextColor = Color.Black },
+                new Rectangle(0.5, 0.5, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize),
                 AbsoluteLayoutFlags.PositionProportional
                 );
 
             var notes = new AbsoluteLayout();
-            notes.Children.Add ( notesBg, new Rectangle(0.5, 0.5, 0.91, 1), AbsoluteLayoutFlags.All );
-            notes.Children.Add 
+            notes.Children.Add(notesBg, new Rectangle(0.5, 0.5, 0.91, 1), AbsoluteLayoutFlags.All);
+            notes.Children.Add
                 (
-                    new Editor() 
-                    { 
-                        TextColor = Color.Black, 
-                        Placeholder = "Заметки по вашей цели", 
-                        BackgroundColor = Color.Transparent 
+                    new Editor()
+                    {
+                        TextColor = Color.Black,
+                        Placeholder = "Заметки по вашей цели",
+                        BackgroundColor = Color.Transparent
                     },
                     new Rectangle
                     (
@@ -95,15 +94,36 @@ namespace YourDecade
 
 
 
-            var statusIndicator = new Image() { Source = "status_inprogress.png" , BackgroundColor = Color.Transparent };
-            var calendButton = new Button() { ImageSource = "calend_icon.png" , BackgroundColor = Color.Transparent};
+            var statusIndicator = new Image() { Source = "status_inprogress.png", BackgroundColor = Color.Transparent };
+            var calendImage = new Image() { Source = "calend_icon.png", BackgroundColor = Color.Transparent };
+            var calendPicker = new DatePicker()
+            {
+                MinimumDate = DateTime.Today,
+                MaximumDate = new DateTime(10 + DateTime.Today.Year, 12, 31),
+                BackgroundColor = Color.Transparent,
+                TextColor = Color.Transparent,
+            };
+            var calend = new AbsoluteLayout();
+            calend.Children.Add
+                (
+                calendImage,
+                new Rectangle(0.5, 0.5, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize),
+                AbsoluteLayoutFlags.PositionProportional
+                );
+
+            calend.Children.Add
+                (
+                calendPicker,
+                new Rectangle(0.5, 0.5, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize),
+                AbsoluteLayoutFlags.PositionProportional
+                );
 
             grid.Children.Add(goBackButton, 0, 0);
             grid.Children.Add(goalNameContainer, 0, 1);
             grid.Children.Add(notes, 0, 3);
             grid.Children.Add(subgoalsGrid, 0, 4);
             grid.Children.Add(statusIndicator, 1, 1);
-            grid.Children.Add(calendButton, 1, 2);
+            grid.Children.Add(calend, 1, 2);
 
             Grid.SetRowSpan(goalNameContainer, 2);
             Grid.SetColumnSpan(notes, 2);
@@ -116,19 +136,19 @@ namespace YourDecade
             if (subgoalName == null || subgoalName == "" || subgoalName.Length > 20)
                 return;
 
-            var boxedSubGoal = new AbsoluteLayout() { BackgroundColor = Color.Transparent, HeightRequest = 80};
+            var boxedSubGoal = new AbsoluteLayout() { BackgroundColor = Color.Transparent, HeightRequest = 80 };
             boxedSubGoal.Children.Add
                 (new Image() { Source = "subgoal_background" }, new Rectangle(0.5, 0.5, 0.8, 0.8), AbsoluteLayoutFlags.All);
 
             boxedSubGoal.Children.Add
                 (
                  new Label()
-                    {
-                        BackgroundColor = Color.Transparent,
-                        Text = subgoalName,
-                        TextColor = Color.Black,
-                        FontSize = 28,
-                    },
+                 {
+                     BackgroundColor = Color.Transparent,
+                     Text = subgoalName,
+                     TextColor = Color.Black,
+                     FontSize = 28,
+                 },
                     new Rectangle(0.5, 0.5, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize),
                     AbsoluteLayoutFlags.PositionProportional
                 );
@@ -143,16 +163,17 @@ namespace YourDecade
         private void CreateAddButton()
         {
             var box = new AbsoluteLayout() { BackgroundColor = Color.Transparent, HeightRequest = 80 };
-            var button = new Button() { ImageSource = "plus.png", BackgroundColor = Color.Transparent};
+            var button = new Button() { ImageSource = "plus.png", BackgroundColor = Color.Transparent };
             button.Clicked += AddSubgoal;
             box.Children.Add(new Image() { Source = "subgoal_background" }, new Rectangle(0.5, 0.5, 0.8, 0.8), AbsoluteLayoutFlags.All);
             box.Children.Add(button, new Rectangle(0.5, 0.5, 1, 1), AbsoluteLayoutFlags.All);
-            subgoalsStackLayout.Children.Add(box);        
+            subgoalsStackLayout.Children.Add(box);
         }
 
         private async void GoPreviousPage(object sender, EventArgs e)
         {
             await Navigation.PopModalAsync();
         }
+
     }
 }
