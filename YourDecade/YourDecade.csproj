@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
+    <PackageIcon>icon.png</PackageIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -35,6 +36,13 @@
     <EmbeddedResource Include="font_medium.ttf" />
     <EmbeddedResource Include="font_regular.ttf" />
     <EmbeddedResource Include="font_regular_italic.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\YourDecade.Android\Resources\mipmap-xxxhdpi\icon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
