@@ -26,5 +26,5 @@ YourDecade (Bucket List) - Список всего, что нужно успет
 # Что входит в MVP
 Можно добавлять цель, для каждой цели можно расписать промежуточные шаги. Приложение должно присылать уведомления с напоминаниями о целях.
 
-#Ссылочка на APK файл приложения: https://drive.google.com/file/d/1xK-mRByYzHUBMZo19HUirS4Om_Fw7Hwo/view?usp=sharing
+#Ссылочка на APK файл приложения: [https://drive.google.com/file/d/1xK-mRByYzHUBMZo19HUirS4Om_Fw7Hwo/view?usp=sharing](https://drive.google.com/file/d/1xK-mRByYzHUBMZo19HUirS4Om_Fw7Hwo/view?usp=sharing)https://drive.google.com/file/d/1xK-mRByYzHUBMZo19HUirS4Om_Fw7Hwo/view?usp=sharing
 ----------------------------------------------------------------
