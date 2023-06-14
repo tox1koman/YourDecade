@@ -14,7 +14,10 @@ namespace YourDecade
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class GoalDescription : ContentPage
     {
-        string goalName = "Цель";
+        private DataBaseItem _goal;
+
+        private List<string> _subgoals;
+
         Grid grid = new Grid
         {
             RowDefinitions =
@@ -48,9 +51,12 @@ namespace YourDecade
 
         Button goBackButton = new Button() { ImageSource = "arrow_go_back.png", BackgroundColor = Color.Transparent };
 
-        public GoalDescription()
+        public GoalDescription(DataBaseItem goal)
         {
             InitializeComponent();
+            _subgoals = new List<string>();
+            _goal = goal;
+            InitializeSubgoals();
             goBackButton.Clicked += GoPreviousPage;
             Content = grid;
             BackgroundImageSource = "background2.png";
@@ -67,8 +73,8 @@ namespace YourDecade
                 AbsoluteLayoutFlags.PositionProportional
                 );
             goalNameContainer.Children.Add(
-                new Label() { Text = goalName, FontSize = 32, FontFamily = "SF-Bold", TextColor = Color.Black },
-                new Rectangle(0.5, 0.5, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize),
+                new Label() { Text = _goal.Name, FontSize = 255 / _goal.Name.Length > 44 ? 42.5 : 255 / _goal.Name.Length, FontFamily = "SF-Bold", TextColor = Color.Black },
+                new Rectangle(0.65, 0.5, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize),
                 AbsoluteLayoutFlags.PositionProportional
                 );
 
@@ -136,6 +142,14 @@ namespace YourDecade
             if (subgoalName == null || subgoalName == "" || subgoalName.Length > 20)
                 return;
 
+            if (_subgoals.Contains(subgoalName))
+            {
+                await DisplayAlert("Ошибка!", "Такая подцель уже существует.\nПожалуйста выберите другое имя.", "ОК");
+                subgoalName = await DisplayPromptAsync("Новая подцель", "Введите название подцели");
+            }
+
+            _goal.Subgoals += $"ƒ{subgoalName}";
+            App.database.SaveItem(_goal);
             var boxedSubGoal = new AbsoluteLayout() { BackgroundColor = Color.Transparent, HeightRequest = 80 };
             boxedSubGoal.Children.Add
                 (new Image() { Source = "subgoal_background" }, new Rectangle(0.5, 0.5, 0.8, 0.8), AbsoluteLayoutFlags.All);
@@ -173,6 +187,40 @@ namespace YourDecade
         private async void GoPreviousPage(object sender, EventArgs e)
         {
             await Navigation.PopModalAsync();
+        }
+
+        private void InitializeSubgoals()
+        {
+            _subgoals.AddRange(_goal.Subgoals.Split('ƒ'));
+            foreach(var subgoal in _subgoals)
+                if(!string.IsNullOrEmpty(subgoal))
+                AddSubgoalOnFrame(subgoal);
+        }
+
+        private void AddSubgoalOnFrame(string subgoalName)
+        {
+            var boxedSubGoal = new AbsoluteLayout() { BackgroundColor = Color.Transparent, HeightRequest = 80 };
+            boxedSubGoal.Children.Add
+                (new Image() { Source = "subgoal_background" }, new Rectangle(0.5, 0.5, 0.8, 0.8), AbsoluteLayoutFlags.All);
+
+            boxedSubGoal.Children.Add
+                (
+                 new Label()
+                 {
+                     BackgroundColor = Color.Transparent,
+                     Text = subgoalName,
+                     TextColor = Color.Black,
+                     FontSize = 28,
+                 },
+                    new Rectangle(0.5, 0.5, AbsoluteLayout.AutoSize, AbsoluteLayout.AutoSize),
+                    AbsoluteLayoutFlags.PositionProportional
+                );
+
+            subgoalsStackLayout.Children.Insert
+                (
+                subgoalsStackLayout.Children.Count - 1,
+                boxedSubGoal
+                );
         }
 
     }
